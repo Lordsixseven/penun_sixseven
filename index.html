@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Quiz 67</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700;900&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* 1. คอนเซปต์ดีไซน์: Dark & High Contrast Theme */
+        :root {
+            --primary-accent: #deff9a; /* สีเขียวนีออน */
+            --bg-dark: #000000;
+            --card-glass: rgba(15, 15, 15, 0.85);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Prompt', sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* 2. พื้นหลังแบบใส่รูป Mascot และเลข 67 */
+        .app-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 100%),
+                        url('http://googleusercontent.com/image_generation_content/0');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* ลายน้ำเลข 67 จางๆ */
+        .bg-watermark-67 {
+            position: absolute;
+            font-family: 'Urbanist', sans-serif;
+            font-size: 40vw;
+            font-weight: 900;
+            color: rgba(222, 255, 154, 0.03);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* 3. กล่องข้อความและจัดหน้าตาแอป */
+        .slide-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(222, 255, 154, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        /* ขนาดรูป Mascot */
+        .mascot-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-accent);
+            margin: 0 auto 24px auto;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .mascot-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-family: 'Urbanist', sans-serif;
+            font-weight: 900;
+            font-size: 42px;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        h1 span { color: var(--primary-accent); }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .question-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .choices-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .choice-btn:hover:not(:disabled) {
+            background: rgba(222, 255, 154, 0.1);
+            border-color: var(--primary-accent);
+            transform: translateX(5px);
+        }
+
+        .choice-btn:disabled { opacity: 0.6; cursor: default; }
+
+        .action-btn {
+            background: var(--primary-accent);
+            color: #000;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 24px;
+        }
+
+        .action-btn:hover { transform: scale(1.05); }
+
+        .feedback-area {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            display: none;
+            text-align: left;
+        }
+
+        .correct-box { border: 1px solid #16a34a; background: rgba(22, 163, 74, 0.1); }
+        .wrong-box { border: 1px solid #dc2626; background: rgba(220, 38, 38, 0.1); }
+
+        .hidden { display: none !important; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-accent);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-bg">
+    <div class="bg-watermark-67">67</div>
+</div>
+
+<div class="slide-container">
+    
+    <div id="start-screen" class="glass-card">
+        <div class="mascot-logo">
+            <img src="http://googleusercontent.com/image_generation_content/0" alt="Mascot 67">
+        </div>
+        <h1>MISSION <span>67</span></h1>
+        <p class="subtitle">แบบทดสอบนวัตกรรมและเทคโนโลยีเปลี่ยนโลก</p>
+        <button class="action-btn" onclick="startQuiz()">เริ่มภารกิจ</button>
+    </div>
+
+    <div id="quiz-screen" class="glass-card hidden">
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        <div id="question-area">
+            <div id="q-title" class="question-title">กำลังโหลดคำถาม...</div>
+            <div id="choices-stack" class="choices-stack"></div>
+        </div>
+
+        <div id="feedback" class="feedback-area">
+            <div id="feedback-status" style="font-weight: 700; font-size: 20px; margin-bottom: 8px;"></div>
+            <div id="feedback-reason" style="font-size: 15px; color: #d0d0d0; line-height: 1.5;"></div>
+            <button class="action-btn" style="padding: 10px 24px; font-size: 15px;" onclick="nextStep()">ข้อถัดไป</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="glass-card hidden">
+        <div class="mascot-logo">
+            <img src="http://googleusercontent.com/image_generation_content/0" alt="Mascot 67">
+        </div>
+        <h1>MISSION <span>COMPLETE</span></h1>
+        <div style="font-size: 80px; font-weight: 900; color: var(--primary-accent); line-height: 1; margin: 24px 0;">
+            <span id="final-score">0</span>/5
+        </div>
+        <p id="result-msg" style="font-size: 18px; color: var(--text-dim); margin-bottom: 24px;"></p>
+        <button class="action-btn" onclick="location.reload()">เริ่มใหม่อีกครั้ง</button>
+    </div>
+
+</div>
+
+<script>
+    // ชุดคำถามข้อมูลวิทยาศาตร์และเทคโนโลยี
+    const questions = [
+        {
+            q: "แบตเตอรี่ชนิด Solid-State มีการพัฒนาโดยเปลี่ยนส่วนประกอบใดเพื่อลดความเสี่ยงในการลุกไหม้และเพิ่มความหนาแน่นพลังงาน?",
+            c: ["ก. เปลี่ยน Anode เป็นโลหะ Lithium", "ข. เปลี่ยนสาร Electrolyte จากของเหลวไวไฟเป็นเซรามิกหรือแข็ง", "ค. เปลี่ยน Cathode เป็น Nickel ทั้งหมด", "ง. เปลี่ยนตัวคั่นขั้วให้มีความหนามากขึ้น", "จ. เปลี่ยนสารช่วยนำไฟฟ้าเป็น Graphene"],
+            a: 1,
+            r: "แบตเตอรี่ Solid-state ใช้ electrolyte แข็ง ซึ่งไม่ติดไฟและทนความร้อนได้สูงกว่าแบบของเหลว"
+        },
+        {
+            q: "ในการใช้ AI วิเคราะห์ข้อมูลจากดาวเทียม THEOS-2 กระบวนการใดสำคัญที่สุดในการระบุชนิดพืชพรรณ?",
+            c: ["ก. การเพิ่มความเร็วส่งสัญญาณ (Data Latency)", "ข. การเพิ่มจำนวนพิกเซลให้สูงสุด (Resolution)", "ค. การทำ Data Labeling เพื่อสอนโมเดล (Supervised Learning)", "ง. การใช้ระบบระบายความร้อนที่สถานีภาคพื้นดิน", "จ. การติดตั้งแผงโซลาร์เซลล์เพิ่ม"],
+            a: 2,
+            r: "Supervised Learning จำเป็นต้องมีข้อมูลที่ระบุประเภท (Label) เพื่อให้ AI จดจำพิกเซลสีที่ต่างกันของพืชแต่ละชนิดได้"
+        },
+        {
+            q: "กระบวนการผลิต 'Green Hydrogen' ที่เป็นมิตรต่อสิ่งแวดล้อมมากที่สุดตามแนวทางความยั่งยืน คือข้อใด?",
+            c: ["ก. Steam Methane Reforming (SMR)", "ข. Coal Gasification", "ค. Water Electrolysis โดยใช้ไฟฟ้าจากพลังงานหมุนเวียน", "ง. Biomass Thermal Decomposition", "จ. สกัดไฮโดรเจนจากผลพลอยได้ปิโตรเคมี"],
+            a: 2,
+            r: "Green Hydrogen ต้องผลิตจากน้ำ และใช้ไฟฟ้าจากแหล่งพลังงานหมุนเวียนเท่านั้นเพื่อให้เกิด Zero Emission"
+        },
+        {
+            q: "คุณสมบัติเด่นข้อใดของกราฟีน (Graphene) ที่เหมาะสำหรับระบบกรองน้ำจากน้ำทะเล (Desalination)?",
+            c: ["ก. มีความหนามากทำให้กรองสิ่งสกปรกได้ดี", "ข. มีรูพรุนระดับอะตอมที่ยอมให้น้ำผ่านแต่กักเกลือไว้ได้", "ค. มีราคาถูกและหาได้ง่ายทั่วไป", "ง. ละลายในน้ำได้ดีทำให้ทำความสะอาดง่าย", "จ. เป็นฉนวนความร้อนช่วยให้น้ำเย็นลง"],
+            a: 1,
+            r: "กราฟีนเป็นวัสดุ 2 มิติที่แข็งแรงสูงและเจาะรูพรุนขนาดจิ๋ว (Nanopore) เพื่อทำเยื่อเลือกผ่านที่มีประสิทธิภาพสูง"
+        },
+        {
+            q: "การใช้ 'Biometrics Verification' ร่วมกับ AI เพื่อป้องกัน Deepfake มีหลักการทำงานเบื้องต้นอย่างไร?",
+            c: ["ก. ตรวจสอบลายนิ้วมือเพียงอย่างเดียว", "ข. ตรวจสอบความมีชีวิต (Liveness Detection) เช่น การกะพริบตา", "ค. ใช้รหัสผ่านที่ยาวกว่า 12 ตัวอักษร", "ง. บันทึกเสียงสนทนาทั้งหมด", "จ. จำกัดวงเงินในการโอนเงิน"],
+            a: 1,
+            r: "Liveness Detection เป็นเทคนิคที่ AI ใช้แยกแยะระหว่างใบหน้าคนจริงกับวิดีโอที่สร้างจาก AI (Deepfake)"
+        }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function startQuiz() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const data = questions[currentIdx];
+        document.getElementById('q-title').innerText = `${currentIdx + 1}. ${data.q}`;
+        document.getElementById('progress-fill').style.width = `${(currentIdx / questions.length) * 100}%`;
+        
+        const stack = document.getElementById('choices-stack');
+        stack.innerHTML = '';
+        data.c.forEach((choice, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = choice;
+            btn.onclick = () => checkAns(i);
+            stack.appendChild(btn);
+        });
+
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('question-area').classList.remove('hidden');
+    }
+
+    function checkAns(idx) {
+        const data = questions[currentIdx];
+        const feedback = document.getElementById('feedback');
+        const status = document.getElementById('feedback-status');
+        const reason = document.getElementById('feedback-reason');
+        const btns = document.querySelectorAll('.choice-btn');
+
+        btns.forEach(b => b.disabled = true);
+        feedback.style.display = 'block';
+        document.getElementById('question-area').classList.add('hidden');
+
+        if(idx === data.a) {
+            score++;
+            status.innerText = "ภารกิจสำเร็จ! ✅";
+            status.style.color = "var(--primary-accent)";
+            feedback.className = "feedback-area correct-box";
+            reason.innerHTML = `<strong>ยอดเยี่ยม:</strong> ${data.r}`;
+        } else {
+            status.innerText = "ภารกิจล้มเหลว! ❌";
+            status.style.color = "#dc2626";
+            feedback.className = "feedback-area wrong-box";
+            reason.innerHTML = `<strong>เฉลย:</strong> ข้อ ${data.c[data.a].charAt(0)} <br> ${data.r}`;
+        }
+    }
+
+    function nextStep() {
+        currentIdx++;
+        if(currentIdx < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+        
+        let msg = "";
+        if(score === 5) msg = "คุณคืออัจฉริยะนวัตกรรมระดับ 67!";
+        else if(score >= 3) msg = "ความรู้ของคุณอยู่ในเกณฑ์ยอดเยี่ยม!";
+        else msg = "ลองใหม่อีกครั้งเพื่อพิชิตความรู้ระดับ 67";
+        
+        document.getElementById('result-msg').innerText = msg;
+    }
+</script>
+
+</body>
+</html>
